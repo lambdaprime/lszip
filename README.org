@@ -1,0 +1,53 @@
+*lszip* - command-line program which can list content of some specific directory in archive.
+
+This program emerged because I could not find simple way to get listing of some specific directory in zip archive.
+
+Solutions which I tried are:
+
+1. Mounting ZIP archives through FUSE filesystem. 
+
+   Drawback: Linux specific and does not work in Windows)
+
+2. Use unzip.
+
+   Drawback: unfortunately for some archives you may get directories as separate items ex. emacs-23.2/bin/ and for some not. It means that you should handle this situations somehow, otherwise you will not get a full listing of the directory since subdirectories will not be shown. I tried to handle this writing a script but for very big archives it was too slow.
+
+lszip proved to work fast enough with ~100 mb jar files. Why jar files? Because they guaranteed to have a lot of files inside.
+
+Requirements: zlib
+
+Usage:
+
+#+BEGIN_EXAMPLE
+$ lszip -l caffe-master.zip
+0  11-03-16  10:18   caffe-master/
+$ lszip -l caffe-master.zip caffe-master/
+101863  11-03-16  10:18   .Doxyfile
+     0  11-03-16  10:18   .github/
+  1164  11-03-16  10:18   .gitignore
+  1938  11-03-16  10:18   .travis.yml
+  3012  11-03-16  10:18   CMakeLists.txt
+  1917  11-03-16  10:18   CONTRIBUTING.md
+   620  11-03-16  10:18   CONTRIBUTORS.md
+   210  11-03-16  10:18   INSTALL.md
+  2095  11-03-16  10:18   LICENSE
+ 23840  11-03-16  10:18   Makefile
+  4283  11-03-16  10:18   Makefile.config.example
+  2102  11-03-16  10:18   README.md
+  1180  11-03-16  10:18   caffe.cloc
+     0  11-03-16  10:18   cmake/
+     0  11-03-16  10:18   data/
+     0  11-03-16  10:18   docker/
+     0  11-03-16  10:18   docs/
+     0  11-03-16  10:18   examples/
+     0  11-03-16  10:18   include/
+     0  11-03-16  10:18   matlab/
+     0  11-03-16  10:18   models/
+     0  11-03-16  10:18   python/
+     0  11-03-16  10:18   scripts/
+     0  11-03-16  10:18   src/
+     0  11-03-16  10:18   tools/
+#+END_EXAMPLE
+
+23/12/2016 \\
+ID <id.blackmesa@gmail.com>
