@@ -146,48 +146,44 @@ void swap(ListItem li1, ListItem li2) {
     li2->data = tmp;
 }
 
+int partition(const LinkedList linkedList, int (*comparator)(const void* a, const void* b), 
+              int lo, int hi)
+{
+    int i = lo;
+    int j = hi + 1;
+    int pivot = lo;
+
+    while (1) {
+        while (comparator(LL_at(linkedList, ++i), 
+                           LL_at(linkedList, pivot)) < 0)
+            if (i == hi) break;
+        while (comparator(LL_at(linkedList, --j),
+                           LL_at(linkedList, pivot)) > 0)
+            if (j == lo) break;
+        if (i >= j) break;
+        swap(at(linkedList, i), at(linkedList, j));
+    }
+
+    swap(at(linkedList, j), at(linkedList, lo));
+    
+    return j;
+}
+
 void LL_qsort(const LinkedList linkedList, 
               int (*comparator)(const void* a, const void* b),
               int startIndex, int endIndex) 
 {
 
-    if (endIndex - startIndex + 1 <= 1) {
+    if (endIndex <= startIndex) {
         return;
     }
     
-    int leftIndex = startIndex;
-    int rightIndex = endIndex;
-    int pivot = (leftIndex + rightIndex) / 2;
+    int pivot = (startIndex + endIndex) / 2;
+    int newPivot = partition(linkedList, comparator, startIndex, endIndex);
 
-    while (leftIndex <= pivot && rightIndex >= pivot) {
-        while (leftIndex <= pivot) {
-            if (comparator(LL_at(linkedList, leftIndex), 
-                           LL_at(linkedList, pivot)) >= 0) {
-                break;
-            }
-            leftIndex++;
-        }
-        while (rightIndex >= pivot) {
-            if (comparator(LL_at(linkedList, rightIndex), 
-                           LL_at(linkedList, pivot)) <= 0) {
-                break;
-            }
-            rightIndex--;
-        }
-        
-        swap(at(linkedList, leftIndex),
-                at(linkedList, rightIndex));
+    LL_qsort(linkedList, comparator, startIndex, newPivot - 1);
+    LL_qsort(linkedList, comparator, newPivot + 1, endIndex);
 
-        leftIndex++, rightIndex--;
-
-        if (leftIndex - 1 == pivot) {
-            pivot = ++rightIndex;
-        } else if (rightIndex + 1 == pivot) {
-            pivot = --leftIndex;
-        }
-        LL_qsort(linkedList, comparator, startIndex, pivot - 1);
-        LL_qsort(linkedList, comparator, pivot + 1, endIndex);
-    }
 }
 
 void LL_remove(LinkedList linkedList, int index) {

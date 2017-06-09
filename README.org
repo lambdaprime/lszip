@@ -10,9 +10,9 @@ Solutions which I tried are:
 
 2. Use unzip.
 
-   Drawback: unfortunately for some archives you may get directories as separate items ex. emacs-23.2/bin/ and for some not. It means that you should handle this situations somehow, otherwise you will not get a full listing of the directory since subdirectories will not be shown. I tried to handle this writing a script but for very big archives it was too slow.
+   Drawback: unfortunately for some archives you may get directories as separate items ex. emacs-23.2/bin/ and for some not. It means that you should handle this situations somehow, otherwise you will not get a full listing of the directory since subdirectories will not be shown. I tried to handle this writing a script but for archives with many files inside it was too slow.
 
-lszip proved to work fast enough with ~100 mb jar files. Why jar files? Because they guaranteed to have a lot of files inside.
+lszip proved to work fast enough with archives containing 50K files.
 
 Requirements: zlib
 
@@ -49,5 +49,4 @@ $ lszip -l caffe-master.zip caffe-master/
      0  11-03-16  10:18   tools/
 #+END_EXAMPLE
 
-23/12/2016 \\
-ID <id.blackmesa@gmail.com>
+lambdaprime <id.blackmesa@gmail.com>

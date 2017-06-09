@@ -58,7 +58,7 @@ int numberOfDigits(int a) {
  * Prints listing output 
  */
 void print(void *data) {
-    traceIn();
+    traceIn("");
     zip_entry_t *zipEntry = (zip_entry_t *)data;
     
     //if (!matches(zipEntry->fileName)) {
@@ -89,7 +89,7 @@ void print(void *data) {
 int comparator(const void* cmp1, const void* cmp2) {
     zip_entry_t* zipEntry1 = (zip_entry_t*)cmp1;
     zip_entry_t* zipEntry2 = (zip_entry_t*)cmp2;
-    //trace("%s %s", zipEntry1->fileName, zipEntry2->fileName);
+    trace("comparing %s %s", zipEntry1->fileName, zipEntry2->fileName);
     return strcmp(zipEntry1->fileName, zipEntry2->fileName);
 }
 
@@ -167,7 +167,7 @@ inline int processZippedFile(char* filePath, const unz_file_info* fileInfo) {
 }
 
 int walkThruZip(const char* zipFileName) {
-    traceIn();
+    traceIn("");
 
     unzFile zipFile = unzOpen(zipFileName);
     unz_file_info fileInfo;
@@ -237,7 +237,7 @@ void showVersionBanner()
 }
 
 void initialize() {
-    traceIn();
+    traceIn("");
 
     MemAlloc = MA_create(65536);
     if (MemAlloc == NULL) {
@@ -265,7 +265,7 @@ void initialize() {
 }
 
 void deinitialize() {
-    traceIn();
+    traceIn("");
     MA_destroy(MemAlloc);
     LL_destroy(DirListing);
     if (IsDirsFirst) {
@@ -275,7 +275,7 @@ void deinitialize() {
 }
 
 int doListing(const char* zipFileName) {
-    traceIn();
+    traceIn("");
 
     int retCode = walkThruZip(zipFileName);
 

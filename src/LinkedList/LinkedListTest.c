@@ -34,10 +34,6 @@ void testEmptyLinkedList() {
     LL_destroy(list);
 }
 
-void printList(void* str) {
-    printf("%s\n", str);
-}
-
 void testOperations() {
     puts("Testing simple list operations");
     LinkedList list = LL_create();
@@ -56,7 +52,7 @@ void testOperations() {
     LL_remove(list, 1);
     assert(strcmp("one", (char *)LL_at(list, 1)) == 0);
     assert(LL_size(list) == 5);
-    LL_for_each(list, printList);
+    LL_for_each(list, print);
     LL_destroy(list);
 }
 
@@ -91,28 +87,50 @@ void testUniq() {
     LL_destroy(list);
 }
 
-void testQSort() {
+void testQSort_(char* words[], int* sortedPositions, int numOfWords) {
     puts("Testing quicksort function");
     LinkedList list = LL_create();
-    const int numberOfWords = 9;
-    char *words[9] = {
-        "asdfd);", "tabloid", "elapid", "venomous", "curtain", "applicable",
-        "applicable", "innovative", "nest"
-    };
-    int sortedPositions[] = {5, 6, 0, 4, 2, 7, 8, 1, 3};
 
-    for (int i = 0; i < numberOfWords; i++) {
+    for (int i = 0; i < numOfWords; i++) {
         LL_append(list, words[i]);
     }
 
     LL_qsort(list, comparator, 0, LL_size(list) - 1);
+
+    LL_for_each(list, print);
     
-    for (int i = 0; i < numberOfWords; i++) {
+    for (int i = 0; i < numOfWords; i++) {
         printf("current word number is: %d\n", i);
         assert(strcmp(words[sortedPositions[i]], (char *)LL_at(list, i)) == 0);    
     }
 
     LL_destroy(list);
+}
+
+void testQSort() {
+    testQSort_(
+        (char*[]){
+            "asdfd);", "tabloid", "elapid", "venomous", "curtain", "applicable",
+            "applicable", "innovative", "nest"
+        }, 
+        (int[]){5, 6, 0, 4, 2, 7, 8, 1, 3}, 
+        9);
+    testQSort_(
+        (char*[]){"1", "2", "5", "3", "4"}, 
+        (int[]){0, 1, 3, 4, 2}, 
+        5);
+    testQSort_(
+        (char*[]){"4", "2", "3", "1"}, 
+        (int[]){3, 1, 2, 0}, 
+        4);
+    testQSort_(
+        (char*[]){"1", "2", "1", "1"}, 
+        (int[]){0, 2, 3, 1}, 
+        4);
+    testQSort_(
+               (char*[]){"1", "2", "1", "1", "2", "1", "2", "2", "1", "1", "2"}, 
+               (int[]){0, 2, 3, 5, 8, 9, 1, 4, 6, 7, 10}, 
+        11);
 }
 
 int main() {
@@ -121,5 +139,4 @@ int main() {
     testEmptyLinkedList();
     testUniq();
     puts("All tests was successfully passed");
-    while(1);
 }

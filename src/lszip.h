@@ -28,6 +28,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+
+
 #define MAX_FILE_NAME 124
 #define MAX_PATH_NAME 1024
 #define ZIP_FILESEP_CHAR '/'
@@ -35,27 +38,23 @@
 
 //#define TRACING
 
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#include <stdio.h>
-
-
-//#include <tchar.h>
-
 #ifdef TRACING
+
 #define TRACE_PREFIX "[TRACE] "
-inline void _trace() {}
-inline void _trace(const char *format, ...) {
+
+void _trace(const char *format, ...) {
     va_list(arglist);
     va_start(arglist, format);
     vfprintf(stderr, format, arglist);
 }
+
 #define trace(...) \
     _trace("%s %s (%d): ", TRACE_PREFIX, __FILE__, __LINE__); \
     _trace(__VA_ARGS__); \
     fprintf(stderr, "\n")
 #define traceIn(...) \
     _trace("%s %s (%d): ", TRACE_PREFIX, __FILE__, __LINE__); \
-    _trace("> entry %s (", __FUNCTION__); \
+    _trace("> entry %s (", __FUNCTION__); \    
     _trace(__VA_ARGS__); \
     fprintf(stderr, ")\n");
 #define traceOut(X) \
@@ -63,11 +62,14 @@ inline void _trace(const char *format, ...) {
     _trace("< exit %s ", __FUNCTION__); \
     fprintf(stderr, "\n"); \
     return X;
+
 #else
+
 #define trace(...)
 #define traceIn(...)
 #define traceOut(X) \
     return X;
+
 #endif
 
 typedef struct {
